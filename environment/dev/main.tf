@@ -6,3 +6,7 @@ module "app_runner_dev" {
   branch_name  = "main"
   environment  = "dev"
 }
+
+output "app_url" {
+  value = module.app_runner_dev.service_url
+}

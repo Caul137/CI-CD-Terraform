@@ -8,6 +8,9 @@ jobs:
   deploy-dev:
     name: "Deploy Dev"
     runs-on: ubuntu-latest
+    outputs:
+      app_url: ${{ steps.get_url.outputs.URL}}
+
     steps:
       - uses: actions/checkout@v4
       # - uses: aws-actions/configure-aws-credentials@v4
@@ -27,6 +30,13 @@ jobs:
           terraform init
           terraform apply -auto-approve
 
+      - name: Get App Url
+        id: get_url
+        run: |
+          cd environment/dev
+          URL=$(terraform output -raw app_url)
+          echo "URL=$URL" >> $GITHUB_OUTPUT
+
   health-check:
     name: "Verify Dev Health"
     needs: deploy-dev
@@ -34,7 +44,13 @@ jobs:
     steps:
       - name: Check URL status
         run: |
-          curl --fail https://api-dev.awsapprunner.com/health || exit 1
+          TARGET_URL="${{ needs.deploy-dev.outputs.app_url}}"
+          echo "Teste: $TARGET_URL"
+
+          echo "O App Runner muito tempo para ligar"
+          sleep 130
+
+          curl --fail "$TARGET_URL" || exit 1
 
   deploy-prod:
     name: "Deploy Prod"

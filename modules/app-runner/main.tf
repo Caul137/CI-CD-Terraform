@@ -1,5 +1,12 @@
-resource "aws_apprunner_service" "example" {
-  service_name = "example"
+# resource "aws_apprunner_vpc_connector" "connector" {
+#   vpc_connector_name = "${var.service_name}-vpc-connector"
+#   subnets            = var.subnet_ids 
+#   security_groups    = [var.security_group_id]
+# }
+
+
+resource "aws_apprunner_service" "this" {
+  service_name = var.service_name
 
   source_configuration {
     authentication_configuration {
@@ -15,12 +22,17 @@ resource "aws_apprunner_service" "example" {
         }
         configuration_source = "API"
       }
-      repository_url = "https://github.com/example/my-example-python-app"
+      repository_url = "https://github.com/Caul137/CI-CD-Terraform"
       source_code_version {
         type  = "BRANCH"
-        value = "main"
+        value = var.branch_name
       }
     }
+  }
+
+  instance_configuration {
+    cpu = var.cpu
+    memory = var.memory
   }
 
   network_configuration {
@@ -31,6 +43,6 @@ resource "aws_apprunner_service" "example" {
   }
 
   tags = {
-    Name = "example-apprunner-service"
+    Name = "${var.service_name}-service-runner"
   }
 }

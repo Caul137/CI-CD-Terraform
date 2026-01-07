@@ -16,7 +16,12 @@ jobs:
       #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       #     aws-region: "us-east-1"
 
-      - name: Terraform Init & Apply Dev
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+            terraform_version: "1.8.4"
+
+      - name: Terraform Init & Apply - Dev
         run: |
           cd environment/dev
           terraform init
@@ -37,9 +42,21 @@ jobs:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Terraform Init & Apply Prod
-        run: |
-          cd environment/prod
-          terraform init
-          terraform apply -auto-approve
+       - uses: actions/checkout@v4
+
+      # - uses: aws-actions/configure-aws-credentials@v4
+      #   with:
+      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      #     aws-region: "us-east-1"
+
+       - name: Setup Terraform
+         uses: hashicorp/setup-terraform@v3
+         with:
+            terraform_version: "1.8.4"
+    
+       - name: Terraform Init & Apply Prod
+         run: |
+            cd environment/prod
+            terraform init
+            terraform apply -auto-approve

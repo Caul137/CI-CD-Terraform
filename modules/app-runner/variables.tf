@@ -17,3 +17,20 @@ variable "branch_name" {
 variable "environment" {
   type = string
 }
+
+variable "api_key" {
+  type      = string
+  sensitive = true
+}
+
+variable "DB_HOST" {
+  type = string
+}
+
+variable "DB_NAME" {
+  type = string
+}
+
+variable "API_GATEWAY_URL" {
+  type = string
+}

@@ -28,7 +28,7 @@ jobs:
         run: |
           cd environment/dev
           terraform init
-          terraform apply -auto-approve
+          terraform apply -auto-approve -var="api_key=${{ secrets.API_KEY }}"
 
       - name: Get App Url
         id: get_url
@@ -50,7 +50,7 @@ jobs:
           echo "O App Runner muito tempo para ligar"
           sleep 130
 
-          curl --fail "$TARGET_URL" || exit 1
+          curl --retry 5 --retry-delay 20 --fail "$TARGET_URL" || exit 1
 
   deploy-prod:
     name: "Deploy Prod"
@@ -75,4 +75,4 @@ jobs:
          run: |
             cd environment/prod
             terraform init
-            terraform apply -auto-approve
+            terraform apply -auto-approve -var="api_key=${{ secrets.API_KEY }}"

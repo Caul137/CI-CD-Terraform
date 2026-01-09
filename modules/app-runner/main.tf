@@ -12,6 +12,16 @@ resource "aws_apprunner_service" "this" {
           port          = "8000"
           runtime       = "NODEJS_22"
           start_command = "npm start"
+
+          runtime_environment_variables = {
+            "NODE_ENV" = var.environment
+            "API_KEY" = var.api_key
+
+            "DB_HOST" = var.DB_HOST
+            "DB_NAME" = var.DB_NAME
+            "API_URL" = var.API_GATEWAY_URL
+          }
+
         }
         configuration_source = "REPOSITORY"
       }
@@ -26,7 +36,11 @@ resource "aws_apprunner_service" "this" {
   instance_configuration {
     cpu = var.cpu
     memory = var.memory
+
+   
   }
+
+
 
   tags = {
     Name = "${var.service_name}-service-runner"

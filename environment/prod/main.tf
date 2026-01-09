@@ -5,6 +5,10 @@ module "app_runner_dev" {
   memory       = "2 GB"
   branch_name  = "main"
   environment  = "prod"
+  api_key         = var.api_key
+  API_GATEWAY_URL = "sua url"
+  DB_HOST         = "seu host"
+  DB_NAME         = "nome do host"
 }
 
 output "app_url" {

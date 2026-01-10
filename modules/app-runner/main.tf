@@ -1,10 +1,14 @@
+
+
+
+
 resource "aws_apprunner_service" "this" {
   service_name = var.service_name
 
   source_configuration {
-    authentication_configuration {
-      connection_arn = aws_apprunner_connection.example.arn
-    }
+    # authentication_configuration {
+    #   connection_arn = aws_apprunner_connection.example.arn
+    # }
     code_repository {
       code_configuration {
         code_configuration_values {
@@ -36,10 +40,7 @@ resource "aws_apprunner_service" "this" {
   instance_configuration {
     cpu = var.cpu
     memory = var.memory
-
-   
   }
-
 
 
   tags = {

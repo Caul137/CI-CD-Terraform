@@ -27,8 +27,11 @@ jobs:
       - name: Terraform Init & Apply - Dev
         run: |
           cd environment/dev
-          terraform init
-          terraform apply -auto-approve -var="api_key=${{ secrets.API_KEY }}"
+          terraform init \
+          -backend-config="bucket=nome-do-bucket-S3" \
+          -backend-config="key=dev/terraform.tfstate" \
+          -backend-config="region=us-east-1"
+          terraform apply -auto-approve -var="api_key=${{ secrets.API_KEY }}"  -var="DB_PASSWORD=${{ secrets.DB_PASSWORD }}"
 
       - name: Get App Url
         id: get_url
@@ -73,5 +76,8 @@ jobs:
        - name: Terraform Init & Apply Prod
          run: |
             cd environment/prod
-            terraform init
-            terraform apply -auto-approve -var="api_key=${{ secrets.API_KEY }}"
+            terraform init \
+            -backend-config="bucket=nome-do-bucket-S3" \
+            -backend-config="key=prod/terraform.tfstate" \
+            -backend-config="region=us-east-1"
+            terraform apply -auto-approve -var="api_key=${{ secrets.API_KEY }}" -var="DB_PASSWORD=${{ secrets.DB_PASSWORD }}"

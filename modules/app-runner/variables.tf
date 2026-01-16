@@ -31,6 +31,13 @@ variable "DB_NAME" {
   type = string
 }
 
+
+variable "DB_PASSWORD" {
+  type      = string
+  sensitive = true
+}
+
+
 variable "API_GATEWAY_URL" {
   type = string
 }

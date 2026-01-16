@@ -1,7 +1,3 @@
-
-
-
-
 resource "aws_apprunner_service" "this" {
   service_name = var.service_name
 
@@ -19,11 +15,12 @@ resource "aws_apprunner_service" "this" {
 
           runtime_environment_variables = {
             "NODE_ENV" = var.environment
-            "API_KEY" = var.api_key
+            "API_KEY"  = var.api_key
 
-            "DB_HOST" = var.DB_HOST
-            "DB_NAME" = var.DB_NAME
-            "API_URL" = var.API_GATEWAY_URL
+            "DB_HOST"     = var.DB_HOST
+            "DB_NAME"     = var.DB_NAME
+            "DB_PASSWORD" = var.DB_PASSWORD
+            "API_URL"     = var.API_GATEWAY_URL
           }
 
         }
@@ -38,13 +35,13 @@ resource "aws_apprunner_service" "this" {
   }
 
   instance_configuration {
-    cpu = var.cpu
+    cpu    = var.cpu
     memory = var.memory
   }
 
 
   tags = {
-    Name = "${var.service_name}-service-runner"
+    Name        = "${var.service_name}-service-runner"
     Environment = var.environment
   }
 }

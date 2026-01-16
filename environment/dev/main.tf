@@ -6,9 +6,10 @@ module "app_runner_dev" {
   branch_name     = "main"
   environment     = "dev"
   api_key         = var.api_key
-  API_GATEWAY_URL = "sua url"
-  DB_HOST         = "seu host"
-  DB_NAME         = "nome do host"
+  API_GATEWAY_URL = "url"
+  DB_HOST         = "host"
+  DB_NAME         = "db name"
+  DB_PASSWORD     = var.DB_PASSWORD
 }
 
 output "app_url" {

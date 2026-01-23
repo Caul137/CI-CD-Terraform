@@ -28,7 +28,7 @@ jobs:
         run: |
           cd environment/dev
           terraform init \
-          -backend-config="bucket=nome-do-bucket-S3" \
+          -backend-config="bucket=bucket-S3" \
           -backend-config="key=dev/terraform.tfstate" \
           -backend-config="region=us-east-1"
           terraform apply -auto-approve -var="api_key=${{ secrets.API_KEY }}"  -var="DB_PASSWORD=${{ secrets.DB_PASSWORD }}"
@@ -77,7 +77,15 @@ jobs:
          run: |
             cd environment/prod
             terraform init \
-            -backend-config="bucket=nome-do-bucket-S3" \
+            -backend-config="bucket=bucket-S3" \ 
             -backend-config="key=prod/terraform.tfstate" \
             -backend-config="region=us-east-1"
             terraform apply -auto-approve -var="api_key=${{ secrets.API_KEY }}" -var="DB_PASSWORD=${{ secrets.DB_PASSWORD }}"
+       - name: Get App Url Prod
+         id: get_url_prod
+         run: |
+           cd environment/prod
+           URL=$(terraform output -raw app_url)
+           echo "URL=$URL" >> $GITHUB_OUTPUT
+           echo "A URL de Produção é: $URL"
+  
